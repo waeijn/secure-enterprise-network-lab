@@ -145,26 +145,47 @@ You are tasked with securing a **mid-sized enterprise network** composed of mult
 ---
 
 ## Repository Structure
+
 secure-enterprise-network-lab/
+
 │
+
 ├── packet-tracer-files/
+
 │   ├── week1_baseline.pkt
+
 │   ├── week1_segmented.pkt
+
 │   ├── week2_acl_hardened.pkt
+
 │   └── final_secure_network.pkt
+
 │
+
 ├── docs/
+
 │   ├── Week1.md
+
 │   ├── Week2.md
+
 │   ├── Week3.md
+
 │   ├── SECURITY_POLICY.md
+
 │   └── Final_Report.md
+
 │
+
 ├── screenshots/
+
 │   ├── week1/
+
 │   ├── week2/
+
 │   └── week3/
+
 │
+
 └── README.md
 
 
