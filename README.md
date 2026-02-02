@@ -167,9 +167,6 @@ secure-enterprise-network-lab/
 │
 └── README.md
 
-yaml
-Copy code
-
 ---
 
 ## Skills Demonstrated
