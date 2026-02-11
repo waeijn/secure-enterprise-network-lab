@@ -62,3 +62,46 @@ inter-VLAN routing for all 5 VLANs using 802.1Q encapsulation.
 
 Successfully verified inter-VLAN routing with ping tests between
 all department PCs.
+
+## Task 3: Switch Port Hardening
+
+### Overview
+
+Hardened the switch by disabling all unused ports and assigning
+them to a blackhole VLAN to prevent rogue device attacks.
+
+### Security Problem
+
+Unused switch ports default to VLAN 1 and remain active,
+allowing any device plugged into them to gain network access.
+
+### Controls Applied
+
+#### Blackhole VLAN (VLAN 999)
+
+Created a dedicated VLAN with no routed interface. All unused
+ports are assigned here so even if the shutdown is bypassed,
+traffic goes nowhere.
+
+#### Port Shutdown
+
+Administratively disabled all unused ports (Fa0/6-24, Gi0/2)
+using the shutdown command. These ports will show as
+"disabled" in interface status.
+
+### Defense-in-Depth
+
+Both controls are applied together following the
+defense-in-depth principle: never rely on a single
+security control.
+
+### Ports Hardened
+
+- FastEthernet0/6 through FastEthernet0/24 (19 ports)
+- GigabitEthernet0/2 (1 port)
+- Total: 20 ports disabled and assigned to VLAN 999
+
+### Testing
+
+Verified active ports (Fa0/1-5, Gi0/1) still function
+correctly after hardening via successful ping tests.
