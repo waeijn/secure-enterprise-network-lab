@@ -105,3 +105,40 @@ security control.
 
 Verified active ports (Fa0/1-5, Gi0/1) still function
 correctly after hardening via successful ping tests.
+
+## Week 1 Summary
+
+### Accomplishments
+
+Successfully transformed a flat, insecure network into a properly
+segmented enterprise network with VLAN isolation and hardened
+switch configurations.
+
+### Key Security Improvements
+
+**Before (Baseline):**
+
+- Single flat network (192.168.1.0/24)
+- No segmentation between departments
+- Unrestricted lateral movement
+- Unused ports active and vulnerable
+
+**After (Segmented & Hardened):**
+
+- 5 separate VLANs with dedicated subnets
+- Department isolation via VLAN segmentation
+- Inter-VLAN routing controlled through R1-Core
+- 20 unused ports disabled and assigned to blackhole VLAN
+- Foundation established for ACL enforcement (Week 2)
+
+### Files Delivered
+
+- `week1_baseline.pkt` - Initial flat network
+- `week1_segmented.pkt` - Segmented and hardened network
+- 9 verification screenshots
+- Complete documentation
+
+### Next Steps
+
+Week 2 will implement Access Control Lists (ACLs) to enforce
+least-privilege access policies between departments.
