@@ -9,7 +9,7 @@ The project is structured to be **resume-safe, realistic, and interview-ready**,
 ## Project Progress
 
 - [x] Week 1: Secure Network Architecture & Segmentation
-- [ ] Week 2: Access Control & Least Privilege
+- [x] Week 2: Access Control & Least Privilege
 - [ ] Week 3: Device & Network Hardening
 - [ ] Week 4: Security Policies & Final Review
 
