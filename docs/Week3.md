@@ -155,3 +155,126 @@ enable) create authentication barriers.
 Switch management IP configured in IT VLAN (192.168.10.254) to enable
 remote administration from the IT department while maintaining network
 segmentation.
+
+## Task 2: Enable SSH and Disable Telnet
+
+### Objective
+
+Replace insecure Telnet access with encrypted SSH for all remote
+device management to protect credentials and commands from
+network sniffing attacks.
+
+### Security Problem - Telnet
+
+Telnet transmits all data in plaintext including:
+
+- Authentication credentials
+- Configuration commands
+- Sensitive network information
+- Session data
+
+Any attacker with network access can capture Telnet traffic and
+extract passwords using packet sniffers like Wireshark.
+
+### SSH Implementation
+
+#### Configuration Applied
+
+**Router (R1-Core):**
+
+```
+hostname R1-Core
+ip domain-name enterprise.local
+crypto key generate rsa modulus 2048
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+
+username admin privilege 15 secret Admin@2026!SSH
+
+line vty 0 4
+ transport input ssh
+ login local
+```
+
+**Switch (SW1-Core):**
+
+```
+hostname SW1-Core
+ip domain-name enterprise.local
+crypto key generate rsa modulus 2048
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+
+username admin privilege 15 secret Admin@2026!SSH
+
+line vty 0 15
+ transport input ssh
+ login local
+```
+
+### SSH Components Explained
+
+**RSA Key Pair (2048-bit):**
+
+- Public key: Shared with clients for encryption
+- Private key: Kept secret on device for decryption
+- 2048-bit provides strong cryptographic protection
+
+**SSH Version 2:**
+
+- Modern, secure protocol
+- Fixes vulnerabilities in SSH v1
+- Industry standard and compliance requirement
+
+**Local Username Database:**
+
+- Individual user accounts vs shared line password
+- Privilege level 15 grants immediate privileged access
+- Better accountability and audit trails
+
+**Transport Input SSH:**
+
+- Explicitly allows only SSH protocol
+- Blocks Telnet completely
+- Prevents plaintext management access
+
+### Security Improvements
+
+**Before (Telnet):**
+
+- Plaintext transmission
+- Credentials visible to sniffers
+- No encryption
+- Vulnerable to man-in-the-middle attacks
+
+**After (SSH):**
+
+- End-to-end encryption
+- Credentials protected
+- Server authentication via RSA keys
+- Resistant to eavesdropping
+
+### Session Security Settings
+
+**Timeout: 60 seconds**
+
+- Disconnects idle sessions automatically
+- Prevents abandoned sessions from remaining open
+- Reduces attack window
+
+**Authentication Retries: 3**
+
+- Limits brute force login attempts
+- Disconnects after 3 failed attempts
+- Forces attacker to reconnect (slows attacks)
+
+### Testing Results
+
+- SSH version 2 enabled on both devices
+- 2048-bit RSA keys generated successfully
+- SSH login working with username/password authentication
+- Telnet access blocked (connection refused)
+- VTY lines configured for SSH-only transport
+- Privilege 15 access granted to admin user
