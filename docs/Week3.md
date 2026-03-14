@@ -278,3 +278,146 @@ line vty 0 15
 - Telnet access blocked (connection refused)
 - VTY lines configured for SSH-only transport
 - Privilege 15 access granted to admin user
+
+## Task 3: Login Banners & Management Access Control
+
+### Part A: Login Banners
+
+#### Objective
+
+Implement legal warning banners to establish authorized use policies
+and provide legal protection against unauthorized access.
+
+#### Banner Types Configured
+
+**Message of the Day (MOTD):**
+
+- Displays before login prompt
+- Provides legal warning
+- Establishes no expectation of privacy
+- Warns of monitoring and prosecution
+
+**Login Banner:**
+
+- Displays after MOTD, before authentication
+- Reinforces authorized access requirement
+
+#### Configuration Applied
+
+**Both Router and Switch:**
+
+```
+banner motd #
+*********************************************************************
+WARNING: UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED
+
+This system is for authorized use only. All activity is monitored
+and logged. Unauthorized access or use may result in criminal and/or
+civil prosecution to the fullest extent of the law.
+
+Disconnect immediately if you are not an authorized user.
+*********************************************************************
+#
+
+banner login #
+*********************************************************************
+AUTHORIZED PERSONNEL ONLY
+Provide valid credentials to proceed.
+*********************************************************************
+#
+```
+
+#### Legal Protection Rationale
+
+**Why Banners Matter:**
+
+- Establishes explicit "authorized use only" policy
+- Removes expectation of privacy for users
+- Strengthens legal standing for prosecution
+- Required by many compliance frameworks (PCI-DSS, HIPAA)
+
+**Best Practices Followed:**
+
+- No welcoming language (avoids implied permission)
+- Clear warning about monitoring
+- Statement of legal consequences
+- Instruction to disconnect if unauthorized
+
+### Part B: Management Access Control
+
+#### Objective
+
+Restrict SSH management access to devices to only the IT VLAN,
+preventing unauthorized management attempts from other departments
+or Guest network.
+
+#### Access Policy
+
+- IT VLAN (192.168.10.0/24): ALLOWED
+- All other VLANs: DENIED
+
+#### Configuration Applied
+
+**Router (R1-Core):**
+
+```
+banner motd #
+[warning text]
+#
+
+banner login #
+[login text]
+#
+```
+
+**Switch (SW1-Core):**
+
+```
+banner motd #
+[warning text]
+#
+```
+
+**Note:** The 2960 switch in Packet Tracer does not support the `banner login`
+command. Only MOTD banner is configured, which is the primary legal warning
+and appears before authentication.
+
+#### Access-Class Explained
+
+**Standard ACL on VTY Lines:**
+
+- Filters incoming SSH connections by source IP
+- Applied with `access-class` command (not `ip access-group`)
+- `in` direction filters connections TO the device
+- Only permitted IPs can establish SSH sessions
+
+**Why Standard ACL?**
+
+- Only need to filter by source IP (not destination, port, etc.)
+- Simpler and more efficient than extended ACL
+- Industry best practice for VTY access control
+
+#### Security Rationale
+
+**Defense Against:**
+
+- Unauthorized management access from Guest network
+- Lateral movement attempts after department compromise
+- Insider threats from non-IT personnel
+- Accidental configuration changes by unauthorized users
+
+**Layered Security:**
+This combines with existing controls:
+
+- Layer 1: Network segmentation (VLANs)
+- Layer 2: Access control (ACLs between VLANs)
+- Layer 3: SSH authentication (username/password)
+- Layer 4: Management access restriction (this task)
+
+#### Testing Results
+
+- MOTD and login banners display on SSH connection
+- IT VLAN successfully connects via SSH
+- HR VLAN SSH connection refused
+- Guest VLAN SSH connection refused
+- Management plane secured to IT department only
