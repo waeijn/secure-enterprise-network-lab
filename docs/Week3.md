@@ -421,3 +421,104 @@ This combines with existing controls:
 - HR VLAN SSH connection refused
 - Guest VLAN SSH connection refused
 - Management plane secured to IT department only
+
+## Task 4: Disable Unused Services & Final Hardening
+
+### Objective
+
+Reduce attack surface by disabling unnecessary services and implementing
+session timeout controls on network devices.
+
+### Attack Surface Reduction
+
+#### Services Disabled
+
+**CDP (Cisco Discovery Protocol):**
+
+- Disabled globally on router
+- Disabled on Guest access port (Fa0/5) on switch
+- Prevents information disclosure to untrusted networks
+
+**Session Timeout:**
+
+- 5-minute exec timeout on console and VTY lines
+- Automatically disconnects idle sessions
+- Prevents abandoned sessions from remaining open
+
+### Configuration Applied
+
+#### Router (R1-Core)
+
+```
+no cdp run
+
+interface GigabitEthernet0/0/0.10
+ no ip proxy-arp
+
+interface GigabitEthernet0/0/0.20
+ no ip proxy-arp
+
+interface GigabitEthernet0/0/0.30
+ no ip proxy-arp
+
+interface GigabitEthernet0/0/0.40
+ no ip proxy-arp
+
+interface GigabitEthernet0/0/0.99
+ no ip proxy-arp
+
+line console 0
+ exec-timeout 5 0
+
+line vty 0 4
+ exec-timeout 5 0
+```
+
+#### Switch (SW1-Core)
+
+```
+interface FastEthernet0/5
+ no cdp enable
+
+line console 0
+ exec-timeout 5 0
+
+line vty 0 15
+ exec-timeout 5 0
+```
+
+### Packet Tracer Limitations
+
+The 4331 router model in Packet Tracer has limited support for some advanced
+hardening commands. The following commands are not available but would be
+implemented in production Cisco IOS environments:
+
+- `no ip http server` - Disable HTTP web interface
+- `no ip http secure-server` - Disable HTTPS web interface
+- `no ip source-route` - Disable IP source routing
+
+These are industry-standard hardening practices and would be included in
+real-world deployments.
+
+### Security Controls Explained
+
+**CDP Disable:**
+
+- CDP broadcasts device information (hostname, IOS version, IP addresses)
+- Valuable reconnaissance data for attackers
+- Disabled globally on router for maximum security
+- Disabled on untrusted Guest port on switch
+
+**Exec Timeout:**
+
+- Auto-logout after 5 minutes of inactivity
+- Prevents abandoned sessions from staying open
+- Reduces session hijacking risk
+- Forces re-authentication for continued access
+
+### Testing Results
+
+- CDP disabled on router (global)
+- CDP disabled on switch Guest port
+- Exec timeout configured on all management lines
+- All configurations saved to NVRAM
