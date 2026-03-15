@@ -2,7 +2,7 @@
 
 ## Final Project Report
 
-**Author:** Waeijn  
+**Author:** John Wayne Landong  
 **Project Duration:** February 2026 - March 2026  
 **Project Type:** Personal Cybersecurity Lab
 
