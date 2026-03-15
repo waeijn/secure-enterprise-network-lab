@@ -104,7 +104,7 @@ SW1-Core# show interfaces status
 - Gi0/2: disabled
 - All assigned to VLAN 999
 
-**Actual Result:** [PASS/FAIL]
+**Actual Result:** [PASS]
 
 **Evidence:** Screenshot `test_04_disabled_ports.png`
 
@@ -126,9 +126,9 @@ ping 192.168.30.10  (Finance)
 ping 192.168.40.10  (Operations)
 ```
 
-**Expected Result:** All pings FAIL (blocked by GUEST_ISOLATION ACL)
+**Expected Result:** All pings unsuccessful (blocked by GUEST_ISOLATION ACL)
 
-**Actual Result:** FAIL (due to Packet Tracer limitation, not configuration error)
+**Actual Result:** [FAIL] (due to Packet Tracer limitation, not configuration error)
 
 **Configuration Status:** CORRECT - Production Ready
 
@@ -180,8 +180,8 @@ ping 192.168.20.10
 
 **Actual Result:**
 
-- Test A: PASS
-- Test B: FAIL (due to Packet Tracer limitation, not configuration error)
+- Test A: [PASS]
+- Test B: [FAIL] (due to Packet Tracer limitation, not configuration error)
 
 **Configuration Status:** CORRECT - Production Ready
 
@@ -231,8 +231,8 @@ ping 192.168.30.10
 
 **Actual Result:**
 
-- Test A: PASS
-- Test B: FAIL (due to Packet Tracer limitation, not configuration error)
+- Test A: [PASS]
+- Test B: [FAIL] (due to Packet Tracer limitation, not configuration error)
 
 **Configuration Status:** CORRECT - Production Ready
 
@@ -515,11 +515,11 @@ R1-Core# show ip interface GigabitEthernet0/0/0.10 | include Proxy
 
 | Category              | Tests Conducted | Config Correct | PT Limitations | Notes                              |
 | --------------------- | --------------- | -------------- | -------------- | ---------------------------------- |
-| Network Segmentation  | 4/4             | 4/4 ✓          | 0              | All PASS                           |
-| Access Control        | 4/4             | 4/4 ✓          | 3              | ACL configs correct, PT limitation |
-| Device Authentication | 3/3             | 3/3 ✓          | 0              | All PASS                           |
-| Management Access     | 4/4             | 4/4 ✓          | 2              | Configs correct, PT limitations    |
-| Service Hardening     | 2/2             | 2/2 ✓          | 0              | All PASS                           |
+| Network Segmentation  | 4/4             | 4/4            | 0              | All PASS                           |
+| Access Control        | 4/4             | 4/4            | 3              | ACL configs correct, PT limitation |
+| Device Authentication | 3/3             | 3/3            | 0              | All PASS                           |
+| Management Access     | 4/4             | 4/4            | 2              | Configs correct, PT limitations    |
+| Service Hardening     | 2/2             | 2/2            | 0              | All PASS                           |
 | **TOTAL**             | **17/17**       | **17/17**      | **5**          | **100% config accuracy**           |
 
 **Overall Result:** All 17 security controls tested and validated.
@@ -610,9 +610,9 @@ The Cisco 2960 switch model in Packet Tracer does not support the
 
 **Configuration Validation:**
 
-- Router: Both MOTD and login banners configured ✓
-- Switch: MOTD banner configured (login banner not supported in PT) ✓
-- Banner content meets legal and security requirements ✓
+- Router: Both MOTD and login banners configured
+- Switch: MOTD banner configured (login banner not supported in PT)
+- Banner content meets legal and security requirements
 
 **Production Environment Expectations:**
 On physical Cisco 2960 switches, the `banner login` command is supported
